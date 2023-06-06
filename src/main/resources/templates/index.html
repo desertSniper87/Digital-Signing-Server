@@ -1,0 +1,291 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Document Singing Server Demo</title>
+<link rel="icon" type="image/png" href="/favicon.ico" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link th:href="@{/css/navbar-top-fixed.css}" rel="stylesheet" />
+<script th:src="@{/js/utility.js}"></script>
+
+</head>
+<body style="padding-top: 50px;">
+	<!-- Nav Bar -->
+	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+		<img style="height: 40px; margin-right: 5px" class="img img-thumbnail" th:src='@{/images/logo.png}' />
+		<a class="navbar-brand" href="/">eSign Signing Demo</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+	</nav>
+
+	<!-- Body -->
+	<div class="container">
+		<br>
+		<ul class="nav nav-tabs" id="myTab" role="tablist">
+			<li class="nav-item">
+				<a class="nav-link active" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Prerequisite</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" data-toggle="tab" href="#selection" role="tab" aria-controls="selection" aria-selected="false">Test User Certificate</a>
+			</li>
+			<!-- <li class="nav-item">
+				<a class="nav-link" data-toggle="tab" href="#xml-tab" role="tab" aria-controls="xml" aria-selected="false">XML Data Signing</a>
+			</li> -->
+			<li class="nav-item">
+				<a class="nav-link" data-toggle="tab" href="#pdf-tab" role="tab" aria-controls="pdf" aria-selected="false">PDF Signing</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" data-toggle="tab" href="#support-tab" role="tab" aria-controls="contact" aria-selected="false">Support</a>
+			</li>
+		</ul>
+		<div class="tab-content" id="myTabContent">
+			<div class="tab-pane  show  active" id="home" role="tabpanel" aria-labelledby="home-tab">
+				<br>
+				<h5>How to run</h5>
+
+				<h6>Web Based Demo</h6>
+				<p>
+					<code> java -jar esign-cloud-server-1.0.1-SNAPSHOT.jar --esign.upload.path=[UPLOAD_DIR] --esign.base.url=[ESIGN_API_URL] --esign.auth.client=[CLIENT_ID] --esign.auth.password=[CLIENT_PASSWORD] </code>
+				</p>
+				<h6>API Service</h6>
+				<p>
+					<code> java -jar esign-cloud-server-1.0.1-SNAPSHOT.jar --esign.upload.path=[UPLOAD_DIR] </code>
+				</p>
+				<p>
+					<strong>where</strong>
+					<br>
+					<code>
+
+						esign.upload.path - the path where doc will be stored
+						<br>
+						esign.auth.url - esign signing url
+						<br>
+						esign.auth.client - esign clientID
+						<br>
+						esign.auth.password - esign client Password
+						<br>
+					</code>
+				</p>
+				<h5>PDF signing Web Demo</h5>
+				<hr>
+				<h6>Please follow the steps before you start signing in web:-</h6>
+				<ul>
+					<li>
+						Step 1: Register a user using mobile number as a username via QuickPass app [
+						<a target="_blank" href="https://bcloud.bcc.gov.bd/index.php/s/iU0hEcvkPgEEz7V">QuickPass APK (staging)</a>
+						or
+						<a target="_blank" href="https://play.google.com/store/apps/details?id=com.bcc.quickpass">QuickPass (Live)</a>
+						]
+					</li>
+					<li>
+						Step 2: Contact to BCC CA team to get staging credentials (clientID and Password). Its required to sign pdf document for this web based demo in a single event.
+						<br>
+						<strong>
+							<i>NB: Credentials are not required if you want to use the API service for digest generation and merging separately in this application.</i>
+						</strong>
+					</li>
+					<li>
+						Step 3: If both
+						<b>step 1 & step 2 </b>
+						are complete , you can go to
+						<b>Test User Certificate</b>
+						tab and provide username/mobile number (without +88) and click
+						<b> Get eSign Certificate</b>
+						button. If your registration is successful and credentials are valid, it will return valid eSign Certificate.
+					</li>
+					<li>
+						Step 4: If step 3 works fine, go to
+						<strong> PDF Signing </strong>
+						and upload any pdf document to digitally sign using that user's certificate
+					</li>
+					<li>Step 4.1: After initiating a pdf sign request, you have to authorize the sign from the Quickpass app.</li>
+					<li>Step 5: If authorization is successful, you can download the signed pdf document and verify it any pdf viewer/tools</li>
+				</ul>
+
+				<h5>PDF signing as API service</h5>
+				<hr>
+				<p>
+					You can also sign any pdf using the API service of this application which requires
+					<strong> no Client credentials</strong>
+				</p>
+				<ul>
+					<li>
+						Step 1: Get user esign user certificate
+						<strong> [Using esign integration API]</strong>
+					</li>
+					<li>Step 2: Upload a pdf with user certificate to get document digest [Upload API]</li>
+					<li>
+						Step 3: Sign the document digest, authorize the signature and get the signed digest
+						<strong>[Using esign integration API]</strong>
+					</li>
+					<li>Step 4: Merge the signed digest with orignal pdf[Merge API]
+				</ul>
+
+				More details on API
+				<a href="https://documenter.getpostman.com/view/1770817/2s93m7XMZQ#62dd97f1-4276-4449-a536-278ec16400d0">eSign Signing Service API</a>
+				<!-- <img style="margin: 0px auto" height="80%" class="img img-thumbnail" th:src='@{/images/select.png}' />
+ -->
+			</div>
+
+			<div class="tab-pane show" id="selection" role="tabpanel" aria-labelledby="selection">
+				<br />
+				<form>
+					<div class="form-body">
+						<div th:class="form-group">
+							<label class="control-label col-md-3">
+								QuickPass Username
+								<span class="required" aria-required="true"> * </span>
+							</label>
+							<div class="col-md-4">
+								<input id="select-quickpass-username" placeholder="11 Digit Mobile Number" data-required="1" class="form-control" type="text">
+							</div>
+						</div>
+						<div th:class="form-group">
+							<label class="control-label col-md-3"> </label>
+							<div class="col-md-4">
+								<a class="btn-esign-select btn btn-primary" id="button" href="#">Get eSign Certificate </a>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+
+			<!-- <div class="tab-pane fade" id="xml-tab" role="tabpanel" aria-labelledby="xml-tab">
+				<textarea rows="10" cols="100" id="inputXml"></textarea>
+				<br />
+				<a class="btn-digital-xml btn btn-info " id="button" href="#?"> Click to Sign XML Data </a>
+			</div> -->
+
+			<div class="tab-pane fade" id="pdf-tab" role="tabpanel" aria-labelledby="pdf-tab">
+				<br>
+				<form>
+					<div class="row">
+						<div class="col-md-6">
+							<div th:class="form-group">
+								<label class="control-label">
+									QuickPass Username
+									<span class="required" aria-required="true"> * </span>
+								</label>
+								<input id="quickpass-username" placeholder="11 Digit Mobile Number" data-required="1" class="form-control" type="text" required="required">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text" id="inputGroupFileAddon01">Upload a PDF document </span>
+									</div>
+									<div class="custom-file">
+										<input name="file" required="required" type="file" class="custom-file-input form-control upload  form-control-lg" id="pdfDocument" aria-describedby="inputGroupFileAddon01">
+										<label class="custom-file-label" for="inputGroupFile01"> Choose file </label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<h5>Signature Parameters</h5>
+					<a target="_blank" href="https://itextpdf.com/sites/default/files/rtDM7_0.png">Need Hints?</a>
+					<hr>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="lefty">Lower Left X</label>
+								<input type="text" class="form-control" id="leftx" placeholder="default 36" value="36">
+							</div>
+							<div class="form-group">
+								<label for="lefty">Lower Left Y</label>
+								<input type="text" class="form-control" id="lefty" placeholder="default 748" value="748">
+							</div>
+							<div class="form-group">
+								<label for="pageNo">Page Number</label>
+								<input type="text" placeholder="Page Number where signature will be shown. default 1" class="form-control" id="pageNo" value="1">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="rightx">Upper Right X</label>
+								<input type="text" class="form-control" id="rightx" placeholder="default 144" value="144">
+							</div>
+							<div class="form-group">
+								<label for="righty">Upper Right Y</label>
+								<input type="text" class="form-control" id="righty" placeholder="default 780" value="780">
+							</div>
+						</div>
+						<div class="form-group"></div>
+					</div>
+					<h5>Signature Info</h5>
+					<br>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="pwd">Location</label>
+								<input type="text" class="form-control" id="location" placeholder="Dhaka">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="usr">Reason</label>
+								<input type="text" class="form-control" id="reason" , placeholder="I am signing">
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<button class="btn-esign-pdf btn btn-success" id="button" href="#?">Click to Sign PDF Document</button>
+					</div>
+				</form>
+			</div>
+
+			<div class="tab-pane fade" id="support-tab">
+				<div class="row">
+
+					<div class="col-md-12 text-center" style="margin: 50px">
+						<h4>Please contact us if you have any query:-</h4>
+						<address>
+							E-14/X, ICT Tower,
+							<br>
+							Agargaon, Dhaka-1207
+							<br>
+							Telephone: +88-02-55007184 (ext 105)
+							<br>
+							Fax: 88-02-55006791
+							<br>
+							Email(support):
+							<a href="mailto:support@bcc-ca.gov.bd">support@bcc-ca.gov.bd</a>
+							<br>
+							Email(integration):
+							<a href="mailto:dev.ca.bcc@gmail.com">dev.ca.bcc@gmail.com</a>
+							<br>
+							Web:
+							<a href="https://bcc-ca.gov.bd/" target="_blank">https://bcc-ca.gov.bd/</a>
+						</address>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<br>
+		<h2>Result</h2>
+		<hr>
+		<div class="card">
+			<h5 class="text-center" id="message"></h5>
+			<hr />
+			<div class="card-body">
+				<div class="" id="result"></div>
+			</div>
+		</div>
+	</div>
+	<div class="container" style="position: relative; bottom: 0px">
+		<p class="text-center">
+			Copyright©BCC CA Team,
+			<strong th:text="${#dates.format(#dates.createNow(), 'yyyy')}"></strong>
+		</p>
+	</div>
+	<script src="js/main.js"></script>
+</body>
+</html>

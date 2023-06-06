@@ -1,0 +1,12 @@
+#Terminal with JDK
+java -jar esign-cloud-server-1.0.1-SNAPSHOT.jar
+
+java -jar esign-cloud-server-1.0.1-SNAPSHOT.jar --esign.upload.path=G:\test
+
+java -jar -Design.upload.path=G:\test esign-cloud-server-1.0.1-SNAPSHOT.jar 
+
+#Docker
+docker run -d --name signing-server -it -p9000:80 -e esign.upload.path=upload-dir signing-server:v2
+
+docker exec -it signing-server  sh
+

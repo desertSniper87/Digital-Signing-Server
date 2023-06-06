@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+	<property name="LOG_HOME" value="appLog" />
+
+	<springProfile name="dev">
+		<appender name="STDOUT_LOGGER" class="ch.qos.logback.core.ConsoleAppender">
+			<encoder>
+				<charset>UTF-8</charset>
+				<pattern>%-5date{"HH:mm:ss,SSS", UTC} %-5level %logger{50} - %msg%n</pattern>
+			</encoder>
+		</appender>
+
+		<appender name="FILE_LOGGER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<file>${LOG_HOME}/signing-server.log</file>
+			<append>true</append>
+			<encoder>
+				<charset>UTF-8</charset>
+				<pattern>%-5date{"yyyy-MM-dd'T'HH:mm:ss,SSSXXX", UTC} %-5level %cyan(%logger{50} - %msg%n)</pattern>
+			</encoder>
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<!-- Rollover daily -->
+				<fileNamePattern>${LOG_HOME}/archive/signing-server.%d{yyyy-MM-dd}.log</fileNamePattern>
+			</rollingPolicy>
+		</appender>
+
+		<logger name="com.zaxxer.hikari" level="off" additivity="false">
+			<appender-ref ref="STDOUT_LOGGER" />
+		</logger>
+
+		<logger name="org.springframework" level="info" additivity="false">
+			<appender-ref ref="STDOUT_LOGGER" />
+		</logger>
+
+		<logger name="org.hibernate" level="warn" additivity="false">
+			<appender-ref ref="STDOUT_LOGGER" />
+			<appender-ref ref="FILE_LOGGER" />
+		</logger>
+
+		<logger name="org.thymeleaf.TemplateEngine" level="info" additivity="false">
+			<appender-ref ref="STDOUT_LOGGER" />
+			<appender-ref ref="FILE_LOGGER" />
+		</logger>
+
+		<logger name="com.memorynotfound" level="debug" additivity="false">
+			<appender-ref ref="STDOUT_LOGGER" />
+			<appender-ref ref="FILE_LOGGER" />
+		</logger>
+
+		<logger name="com.ca.signer" level="debug" additivity="false">
+			<appender-ref ref="STDOUT_LOGGER" />
+			<appender-ref ref="FILE_LOGGER" />
+		</logger>
+
+		<logger name="org.apache" level="WARN" />
+		<logger name="httpclient" level="WARN" />
+		<logger name="com.amazonaws" level="WARN" />
+
+		<root level="debug">
+			<appender-ref ref="STDOUT_LOGGER" />
+			<appender-ref ref="FILE_LOGGER" />
+		</root>
+	</springProfile>
+
+	<springProfile name="prod,staging,docker">
+		<appender name="STDOUT_LOGGER" class="ch.qos.logback.core.ConsoleAppender">
+			<encoder>
+				<charset>UTF-8</charset>
+				<pattern>%-5date{"HH:mm:ss,SSS", UTC} %-5level %logger{50} - %msg%n</pattern>
+			</encoder>
+		</appender>
+
+		<appender name="FILE_LOGGER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<file>${LOG_HOME}/signing-server.log</file>
+			<append>true</append>
+			<encoder>
+				<charset>UTF-8</charset>
+				<pattern>%-5date{"yyyy-MM-dd'T'HH:mm:ss,SSSXXX", UTC} %-5level %cyan(%logger{50} - %msg%n)</pattern>
+			</encoder>
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<!-- Rollover daily -->
+				<fileNamePattern>${LOG_HOME}/archive/signing-server.%d{yyyy-MM-dd}.log</fileNamePattern>
+			</rollingPolicy>
+		</appender>
+
+		<logger name="com.zaxxer.hikari" level="off" additivity="false">
+			<appender-ref ref="FILE_LOGGER" />
+		</logger>
+
+		<logger name="org.springframework" level="info" additivity="false">
+			<appender-ref ref="FILE_LOGGER" />
+		</logger>
+
+		<logger name="org.hibernate" level="error" additivity="false">
+			<appender-ref ref="FILE_LOGGER" />
+		</logger>
+
+		<logger name="org.thymeleaf.TemplateEngine" level="error" additivity="false">
+			<appender-ref ref="FILE_LOGGER" />
+		</logger>
+
+		<logger name="com.memorynotfound" level="warn" additivity="false">
+			<appender-ref ref="FILE_LOGGER" />
+		</logger>
+
+		<logger name="com.ca.signer" level="info" additivity="false">
+			<appender-ref ref="FILE_LOGGER" />
+		</logger>
+
+		<logger name="org.apache" level="WARN" />
+		<logger name="httpclient" level="WARN" />
+		<logger name="com.amazonaws" level="WARN" />
+
+		<root level="info">
+			<appender-ref ref="STDOUT_LOGGER" />
+			<appender-ref ref="FILE_LOGGER" />
+		</root>
+	</springProfile>
+</configuration>
